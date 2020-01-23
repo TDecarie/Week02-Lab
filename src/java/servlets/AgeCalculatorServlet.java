@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import jdk.nashorn.internal.runtime.JSType;
 
 /**
  *
@@ -42,6 +43,22 @@ public class AgeCalculatorServlet extends HttpServlet {
             out.println("</body>");
             out.println("</html>");
         */
+            String age = (request.getParameter("age"));
+            if (age != null) { 
+                try {
+            int nextAge = Integer.parseInt(age); 
+            request.setAttribute("message", "<p>Your age next birthday will be " + ++nextAge + "</p>");
+                }
+                catch(Exception e) {
+                    request.setAttribute("message", "<p>You must enter a number</p>");
+                }
+            
+            }
+            else {
+                request.setAttribute("message", "You must give your current age");
+            }
+        
+        
             getServletContext().getRequestDispatcher("/agecalculator.jsp").forward(request, response);
 
     }
