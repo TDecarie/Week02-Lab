@@ -17,6 +17,9 @@ import javax.servlet.http.HttpServletResponse;
  * @author 800977
  */
 public class ArithmeticCalculatorServlet extends HttpServlet {
+    
+    String firstNum;
+    String secondNum;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,19 +33,46 @@ public class ArithmeticCalculatorServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        /* try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. 
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ArithmeticCalculatorServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ArithmeticCalculatorServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        } */
-        
+        request.setAttribute("message", "---");
+        firstNum = request.getParameter("firstNum");
+        secondNum = request.getParameter("secondNum");
+        System.out.println(firstNum);
+        System.out.println(secondNum);
+        int result = 0;
+        int firstInt = 0;
+        int secondInt = 0;
+        if (firstNum != null && secondNum != null) {
+            if (firstNum.equals("") || secondNum.equals("")) {
+                request.setAttribute("message", "invalid");
+            }
+            else{
+                try{
+                    firstInt = Integer.parseInt(firstNum);
+                    secondInt = Integer.parseInt(secondNum);
+                }
+                catch(Exception e) {
+                    request.setAttribute("message", "invalid");
+                }
+                if (request.getParameter("add") != null) {
+                    result = firstInt + secondInt;
+                    request.setAttribute("message", result);
+                }
+                else if (request.getParameter("sub") != null) {
+                    result = firstInt - secondInt;
+                    request.setAttribute("message", result);
+                }
+                else if (request.getParameter("mul") != null) {
+                    result = firstInt * secondInt;
+                    request.setAttribute("message", result);
+                }
+                else if (request.getParameter("div") != null) {
+                    result = firstInt / secondInt;
+                    request.setAttribute("message", result);
+                }
+            }
+        }
+        request.setAttribute("firstNum", firstNum);
+        request.setAttribute("secondNum", secondNum);
         getServletContext().getRequestDispatcher("/arithmeticcalculator.jsp").forward(request, response);
         
     }
